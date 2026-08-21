@@ -555,6 +555,53 @@ html.mermaid-lightbox-open body {
   font-size: 1.35rem;
 }
 
+.howto-detected {
+  margin: 0 0 0.75rem;
+  color: var(--accent-deep);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.platform-tabs {
+  display: flex;
+  gap: 0.35rem;
+  margin: 0 0 1rem;
+  padding: 0.25rem;
+  border-radius: 12px;
+  background: var(--warn-wash);
+}
+
+.platform-tab {
+  appearance: none;
+  flex: 1;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.45rem 0.5rem;
+  cursor: pointer;
+}
+
+.platform-tab:hover {
+  color: var(--ink);
+}
+
+.platform-tab.is-active {
+  background: var(--sheet);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(28, 42, 51, 0.1);
+}
+
+.howto-tip {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
 .dialog-inner ol {
   margin: 0 0 1rem;
   padding-left: 1.2rem;
@@ -571,6 +618,11 @@ html.mermaid-lightbox-open body {
   border: 1px solid var(--line);
   font-family: var(--font-mono);
   font-size: 0.8rem;
+  white-space: pre-wrap;
+}
+
+.dialog-inner pre[hidden] {
+  display: none !important;
 }
 
 @keyframes rise {

@@ -2,6 +2,12 @@ import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
 import { version as appVersion } from '../package.json';
 import { createMermaidLightbox, enhanceMermaidDiagrams } from './mermaid-lightbox.js';
+import {
+  detectPlatform,
+  fillHowtoDialog,
+  isChromiumBrowser,
+  platformLabel,
+} from './platform.js';
 import './style.css';
 
 const md = new MarkdownIt({
@@ -25,9 +31,38 @@ const installHint = document.getElementById('install-hint');
 const dropOverlay = document.getElementById('drop-overlay');
 const main = document.getElementById('main');
 const mermaidLightbox = createMermaidLightbox(document.getElementById('app'));
+const detectedPlatform = detectPlatform();
+let selectedHowtoPlatform = detectedPlatform;
 
 appVersionEl.textContent = `v${appVersion}`;
 document.title = `Markdown Viewer v${appVersion}`;
+
+function openHowto(platform = selectedHowtoPlatform) {
+  selectedHowtoPlatform = platform || detectPlatform();
+  fillHowtoDialog(howtoDialog, selectedHowtoPlatform);
+  if (typeof howtoDialog.showModal === 'function') {
+    howtoDialog.showModal();
+  } else {
+    howtoDialog.setAttribute('open', '');
+  }
+}
+
+btnHowto.textContent = 'Как установить';
+btnInstallHelp.textContent = `Как установить на ${platformLabel(detectedPlatform)}`;
+
+btnHowto.addEventListener('click', () => openHowto(detectedPlatform));
+btnInstallHelp.addEventListener('click', () => openHowto(detectedPlatform));
+
+howtoDialog.querySelectorAll('[data-platform-tab]').forEach((tab) => {
+  tab.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    selectedHowtoPlatform = tab.dataset.platformTab;
+    fillHowtoDialog(howtoDialog, selectedHowtoPlatform);
+  });
+});
+
+fillHowtoDialog(howtoDialog, selectedHowtoPlatform);
 
 let deferredInstallPrompt = null;
 
@@ -58,7 +93,7 @@ async function promptInstall() {
     return;
   }
 
-  howtoDialog.showModal();
+  openHowto(detectedPlatform);
 }
 
 function isMarkdownName(name) {
@@ -156,9 +191,6 @@ fileInput.addEventListener('change', async () => {
   fileInput.value = '';
 });
 
-btnHowto.addEventListener('click', () => howtoDialog.showModal());
-btnInstallHelp.addEventListener('click', () => howtoDialog.showModal());
-
 window.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault();
   deferredInstallPrompt = event;
@@ -169,7 +201,7 @@ window.addEventListener('appinstalled', () => {
   deferredInstallPrompt = null;
   syncInstallUi();
   alert(
-    'Приложение установлено.\n\nЗакройте эту вкладку и откройте «Markdown Viewer» из меню приложений Ubuntu — так оно будет отдельным окном без адресной строки.',
+    `Приложение установлено.\n\nЗакройте эту вкладку и откройте «Markdown Viewer» как отдельное приложение на ${platformLabel(detectedPlatform)} — так оно будет без адресной строки.`,
   );
 });
 
@@ -180,6 +212,9 @@ btnInstallWelcome.addEventListener('click', () => {
   void promptInstall();
 });
 
+if (!isChromiumBrowser()) {
+  btnInstallHelp.textContent = `Нужен Chrome/Edge · инструкция для ${platformLabel(detectedPlatform)}`;
+}
 window.matchMedia('(display-mode: standalone)').addEventListener('change', syncInstallUi);
 syncInstallUi();
 

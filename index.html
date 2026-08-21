@@ -30,7 +30,7 @@
         <div class="actions">
           <label class="btn btn-accent" for="file-input">Открыть .md</label>
           <button type="button" id="btn-install" class="btn" hidden>Установить</button>
-          <button type="button" id="btn-howto" class="btn btn-ghost">Ubuntu</button>
+          <button type="button" id="btn-howto" class="btn btn-ghost">Как установить</button>
         </div>
         <input
           id="file-input"
@@ -55,7 +55,9 @@
           </div>
           <p id="install-hint" class="welcome-hint" hidden>
             Сейчас это вкладка браузера.
-            <button type="button" id="btn-install-help" class="linkish">Как сделать отдельным приложением на Ubuntu</button>
+            <button type="button" id="btn-install-help" class="linkish">
+              Как установить как приложение
+            </button>
           </p>
         </section>
 
@@ -68,23 +70,22 @@
 
       <dialog id="howto-dialog" class="dialog">
         <form method="dialog" class="dialog-inner">
-          <h2>Отдельное приложение на Ubuntu</h2>
-          <ol>
-            <li>Откройте сайт в <strong>Google Chrome</strong> или Chromium.</li>
-            <li>
-              Нажмите «Установить» или меню Chrome ⋮ →
-              <strong>Установить приложение…</strong>.
-            </li>
-            <li>
-              Закройте вкладку и запускайте <strong>Markdown Viewer</strong> из меню приложений
-              (или <code>chrome://apps</code>).
-            </li>
-            <li>
-              ПКМ по <code>.md</code> → «Открыть с помощью» → Markdown Viewer → «Всегда».
-            </li>
-          </ol>
-          <pre><code>ls ~/.local/share/applications/ | grep -i chrome
-xdg-mime default chrome-XXXX-Default.desktop text/markdown</code></pre>
+          <p class="howto-detected" data-howto-detected></p>
+          <div class="platform-tabs" role="tablist" aria-label="Платформа">
+            <button type="button" class="platform-tab" role="tab" data-platform-tab="windows">
+              Windows
+            </button>
+            <button type="button" class="platform-tab" role="tab" data-platform-tab="macos">
+              macOS
+            </button>
+            <button type="button" class="platform-tab" role="tab" data-platform-tab="linux">
+              Linux
+            </button>
+          </div>
+          <h2 data-howto-title>Установка</h2>
+          <ol data-howto-steps></ol>
+          <p class="howto-tip" data-howto-tip></p>
+          <pre data-howto-code hidden></pre>
           <button type="submit" class="btn btn-accent">Понятно</button>
         </form>
       </dialog>
