@@ -138,3 +138,20 @@ export function fillHowtoDialog(dialog, preferredPlatform = detectPlatform()) {
     tab.setAttribute('aria-selected', active ? 'true' : 'false');
   });
 }
+export function getHowtoPayload(preferredPlatform) {
+  const detected = detectPlatform();
+  const browser = detectBrowser();
+  const id = preferredPlatform || detected;
+  const data = INSTRUCTIONS[id] || INSTRUCTIONS.linux;
+  return {
+    platform: id,
+    detected,
+    browser,
+    detectedLabel: `Сейчас: ${platformLabel(detected)} · ${browserLabel(browser)}`,
+    title: data.title,
+    steps: data.steps,
+    tip: data.tip || '',
+    code: data.code || '',
+  };
+}
+

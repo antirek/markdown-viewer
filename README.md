@@ -1,11 +1,20 @@
 # Markdown Viewer
 
-PWA для просмотра локальных `.md` файлов (только чтение).
+PWA для просмотра локальных `.md` файлов (только чтение). Стек: **Vue 3** (Composition API) + Vite + Vitest.
 
 ## Ссылки
 
 - Репозиторий: https://github.com/antirek/markdown-viewer
 - Приложение (GitHub Pages): https://antirek.github.io/markdown-viewer/
+
+## Скриншоты
+
+| | |
+|:---:|:---:|
+| ![Стартовый экран](docs/screenshots/01-welcome.png) | ![Открытый Markdown](docs/screenshots/02-open-file.png) |
+| Стартовый экран | Открытый `.md` |
+| ![Mermaid inline](docs/screenshots/03-mermaid-inline.png) | ![Mermaid fullscreen](docs/screenshots/04-mermaid-fullscreen.png) |
+| Диаграмма Mermaid в документе | Полноэкранный просмотр (zoom / pan) |
 
 ## Локальный запуск
 
@@ -16,11 +25,12 @@ npm run dev
 
 Откройте URL из терминала в **Chrome / Chromium**. Для проверки установки PWA нужен HTTPS или `localhost`.
 
-Сборка:
+Сборка и тесты:
 
 ```bash
 npm run build
 npm run preview
+npm test
 ```
 
 ## Деплой на GitHub Pages
@@ -38,7 +48,7 @@ npm run preview
 - Drag-and-drop и кнопка «Открыть .md»
 - PWA: установка как приложение
 - `file_handlers` + `launchQueue` — открытие `.md` из ОС (Chromium)
-- Инструкция для Ubuntu («Как на Ubuntu»)
+- Инструкция установки по ОС (Windows / macOS / Linux)
 
 ## Проверка открытия из ОС
 

@@ -1,12 +1,13 @@
 import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 import { VitePWA } from 'vite-plugin-pwa';
 
-// GitHub Pages project site: https://antirek.github.io/markdown-viewer/
 const pagesBase = '/markdown-viewer/';
 
 export default defineConfig(({ mode }) => ({
   base: mode === 'production' ? pagesBase : '/',
   plugins: [
+    vue(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['icons/icon.svg'],
@@ -62,14 +63,12 @@ export default defineConfig(({ mode }) => ({
             launch_type: 'single-client',
           },
         ],
-        // navigate-new: each OS file open gets a fresh client with launchQueue files
         launch_handler: {
           client_mode: 'navigate-new',
         },
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
-        // Mermaid chunks are large; keep them out of the install precache.
         maximumFileSizeToCacheInBytes: 1.5 * 1024 * 1024,
       },
       devOptions: {
@@ -77,4 +76,9 @@ export default defineConfig(({ mode }) => ({
       },
     }),
   ],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['tests/setup.js'],
+  },
 }));
