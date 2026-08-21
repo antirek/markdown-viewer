@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1a1f24" />
+    <meta
+      name="description"
+      content="Просмотр локальных Markdown-файлов. Установите как приложение и открывайте .md двойным кликом."
+    />
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Serif:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <title>Markdown Viewer</title>
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">MD</span>
+          <div class="brand-text">
+            <strong>Markdown Viewer</strong>
+            <span id="file-name" class="file-name">файл не выбран</span>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" id="btn-open" class="btn">Открыть .md</button>
+          <button type="button" id="btn-install" class="btn btn-accent" hidden>
+            Установить как приложение
+          </button>
+          <button type="button" id="btn-howto" class="btn btn-ghost">Как на Ubuntu</button>
+        </div>
+        <input id="file-input" type="file" accept=".md,.markdown,.mdown,.mkd,text/markdown" hidden />
+      </header>
+
+      <aside id="install-banner" class="install-banner" hidden>
+        <p>
+          Сейчас это вкладка Chrome. Чтобы получить отдельное окно без адресной строки —
+          <strong>установите как приложение</strong>, затем запускайте из меню приложений Ubuntu
+          (не из этой вкладки).
+        </p>
+        <div class="install-banner-actions">
+          <button type="button" id="btn-install-banner" class="btn btn-accent">
+            Установить
+          </button>
+          <button type="button" id="btn-install-help" class="btn btn-ghost">Инструкция</button>
+          <button type="button" id="btn-dismiss-banner" class="btn btn-ghost" aria-label="Скрыть">
+            Скрыть
+          </button>
+        </div>
+      </aside>
+
+      <main id="main" class="main">
+        <section id="welcome" class="welcome">
+          <h1>Просмотр Markdown</h1>
+          <p>
+            Только чтение. Перетащите файл сюда или откройте через кнопку. Для отдельного
+            приложения и открытия <code>.md</code> из файлового менеджера — установите PWA в Chrome.
+          </p>
+          <ul class="hints">
+            <li>Chrome / Chromium / Edge — установка и открытие из ОС</li>
+            <li>После установки запускайте из меню приложений, не из вкладки</li>
+            <li>Файлы на диск не записываются</li>
+          </ul>
+        </section>
+
+        <article id="content" class="markdown-body" hidden></article>
+      </main>
+
+      <div id="drop-overlay" class="drop-overlay" hidden>
+        <p>Отпустите, чтобы открыть</p>
+      </div>
+
+      <dialog id="howto-dialog" class="dialog">
+        <form method="dialog" class="dialog-inner">
+          <h2>Отдельное приложение на Ubuntu</h2>
+          <ol>
+            <li>Откройте сайт в <strong>Google Chrome</strong> или Chromium (не Firefox).</li>
+            <li>
+              Нажмите «Установить как приложение» здесь или меню Chrome ⋮ →
+              <strong>Установить приложение…</strong> / <strong>Install Markdown Viewer…</strong>.
+            </li>
+            <li>
+              Закройте вкладку. Запускайте <strong>Markdown Viewer</strong> из меню приложений
+              GNOME (Activities → поиск «Markdown») или из <code>chrome://apps</code>.
+            </li>
+            <li>
+              Окно должно быть без адресной строки. В переключателе окон оно может всё ещё
+              группироваться с Chrome — это ограничение Linux, но это уже app-режим.
+            </li>
+            <li>
+              ПКМ по <code>.md</code> → «Открыть с помощью» → Markdown Viewer → «Всегда».
+            </li>
+          </ol>
+          <p>Через терминал (имя <code>.desktop</code> из <code>~/.local/share/applications/</code>):</p>
+          <pre><code>ls ~/.local/share/applications/ | grep -i chrome
+xdg-mime default chrome-XXXX-Default.desktop text/markdown</code></pre>
+          <button type="submit" class="btn btn-accent">Понятно</button>
+        </form>
+      </dialog>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

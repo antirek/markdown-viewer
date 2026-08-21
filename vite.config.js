@@ -1,0 +1,72 @@
+import { defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
+
+export default defineConfig({
+  plugins: [
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['icons/icon.svg'],
+      manifest: {
+        id: '/',
+        name: 'Markdown Viewer',
+        short_name: 'MD Viewer',
+        description: 'Read-only markdown viewer for local .md files',
+        lang: 'ru',
+        start_url: '/?source=pwa',
+        scope: '/',
+        display: 'standalone',
+        display_override: ['standalone', 'minimal-ui'],
+        background_color: '#1a1f24',
+        theme_color: '#1a1f24',
+        categories: ['utilities', 'productivity'],
+        prefer_related_applications: false,
+  icons: [
+          {
+            src: 'icons/icon.svg',
+            sizes: 'any',
+            type: 'image/svg+xml',
+            purpose: 'any',
+          },
+          {
+            src: 'icons/icon-192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: 'icons/icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: 'icons/icon-maskable-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
+        ],
+        file_handlers: [
+          {
+            action: '/',
+            accept: {
+              'text/markdown': ['.md', '.markdown', '.mdown', '.mkd'],
+              'text/x-markdown': ['.md', '.markdown'],
+              'text/plain': ['.md'],
+            },
+            launch_type: 'single-client',
+          },
+        ],
+        launch_handler: {
+          client_mode: 'focus-existing',
+        },
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
+      },
+      devOptions: {
+        enabled: true,
+      },
+    }),
+  ],
+});

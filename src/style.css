@@ -1,0 +1,376 @@
+:root {
+  color-scheme: dark;
+  --bg: #12161a;
+  --bg-elevated: #1a1f24;
+  --bg-soft: #232a31;
+  --text: #e8eef3;
+  --muted: #9aabba;
+  --accent: #3d9cf0;
+  --accent-strong: #2b7fd0;
+  --border: #2c3640;
+  --code-bg: #0d1115;
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  --font-ui: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --font-doc: "IBM Plex Serif", "Georgia", serif;
+  --font-mono: "IBM Plex Mono", "Consolas", monospace;
+  --radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: radial-gradient(1200px 600px at 10% -10%, #243140 0%, transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, #1c2a24 0%, transparent 50%), var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+}
+
+#app {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.1rem;
+  background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.install-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1.1rem;
+  background: color-mix(in srgb, var(--accent) 16%, var(--bg-elevated));
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+}
+
+.install-banner[hidden] {
+  display: none !important;
+}
+
+.install-banner p {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  max-width: 46rem;
+}
+
+.install-banner-actions {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+html.is-installed-app .install-banner {
+  display: none !important;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #3d9cf0, #1f6aa8);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.brand-text strong {
+  font-size: 0.95rem;
+}
+
+.file-name {
+  color: var(--muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 40vw;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.45rem 0.8rem;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.btn:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+}
+
+.btn-accent {
+  background: var(--accent);
+  border-color: var(--accent-strong);
+  color: #041018;
+  font-weight: 600;
+}
+
+.btn-accent:hover {
+  background: #57aaf5;
+}
+
+.btn-ghost {
+  background: transparent;
+}
+
+.main {
+  overflow: auto;
+  padding: 1.5rem clamp(1rem, 4vw, 2.5rem) 3rem;
+}
+
+.welcome {
+  max-width: 40rem;
+  margin: 4rem auto 0;
+  padding: 1.75rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  background: color-mix(in srgb, var(--bg-elevated) 90%, transparent);
+  box-shadow: var(--shadow);
+}
+
+.welcome h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  letter-spacing: -0.02em;
+}
+
+.welcome p {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.welcome code,
+.dialog code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--code-bg);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+.hints {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.markdown-body {
+  max-width: 48rem;
+  margin: 0 auto;
+  font-family: var(--font-doc);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.markdown-body > :first-child {
+  margin-top: 0;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4 {
+  font-family: var(--font-ui);
+  line-height: 1.25;
+  margin: 1.6em 0 0.6em;
+  letter-spacing: -0.02em;
+}
+
+.markdown-body h1 {
+  font-size: 2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.35em;
+}
+
+.markdown-body h2 {
+  font-size: 1.45rem;
+}
+
+.markdown-body a {
+  color: var(--accent);
+}
+
+.markdown-body code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--code-bg);
+  padding: 0.12em 0.35em;
+  border-radius: 4px;
+}
+
+.markdown-body pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  overflow: auto;
+}
+
+.markdown-body pre code {
+  background: none;
+  padding: 0;
+}
+
+.markdown-body blockquote {
+  margin: 1em 0;
+  padding: 0.2em 0 0.2em 1em;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+}
+
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.65rem;
+}
+
+.markdown-body th {
+  background: var(--bg-soft);
+}
+
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+}
+
+.drop-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--accent) 18%, rgba(0, 0, 0, 0.55));
+  border: 2px dashed color-mix(in srgb, var(--accent) 70%, white);
+  z-index: 50;
+  pointer-events: none;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.drop-overlay[hidden] {
+  display: none !important;
+}
+
+.dialog {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0;
+  background: var(--bg-elevated);
+  color: var(--text);
+  max-width: min(34rem, calc(100vw - 2rem));
+  box-shadow: var(--shadow);
+}
+
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.dialog-inner {
+  padding: 1.25rem 1.35rem 1.35rem;
+}
+
+.dialog-inner h2 {
+  margin: 0 0 0.85rem;
+  font-size: 1.15rem;
+}
+
+.dialog-inner ol {
+  margin: 0 0 1rem;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.dialog-inner p {
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+}
+
+.dialog-inner pre {
+  margin: 0 0 1.1rem;
+  padding: 0.75rem;
+  overflow: auto;
+  background: var(--code-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions {
+    justify-content: stretch;
+  }
+
+  .actions .btn {
+    flex: 1;
+  }
+
+  .file-name {
+    max-width: 100%;
+  }
+
+  .welcome {
+    margin-top: 1.5rem;
+  }
+}
