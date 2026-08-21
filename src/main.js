@@ -19,9 +19,14 @@ const md = new MarkdownIt({
 
 const welcome = document.getElementById('welcome');
 const content = document.getElementById('content');
+const reader = document.getElementById('reader');
+const sourcePanel = document.getElementById('source-panel');
+const sourceView = document.getElementById('source-view');
 const fileNameEl = document.getElementById('file-name');
 const appVersionEl = document.getElementById('app-version');
 const fileInput = document.getElementById('file-input');
+const btnSource = document.getElementById('btn-source');
+const btnSourceClose = document.getElementById('btn-source-close');
 const btnInstall = document.getElementById('btn-install');
 const btnInstallWelcome = document.getElementById('btn-install-welcome');
 const btnInstallHelp = document.getElementById('btn-install-help');
@@ -33,6 +38,8 @@ const main = document.getElementById('main');
 const mermaidLightbox = createMermaidLightbox(document.getElementById('app'));
 const detectedPlatform = detectPlatform();
 let selectedHowtoPlatform = detectedPlatform;
+let currentSourceText = '';
+let sourceOpen = false;
 
 appVersionEl.textContent = `v${appVersion}`;
 document.title = `Markdown Viewer v${appVersion}`;
@@ -63,6 +70,16 @@ howtoDialog.querySelectorAll('[data-platform-tab]').forEach((tab) => {
 });
 
 fillHowtoDialog(howtoDialog, selectedHowtoPlatform);
+
+howtoDialog.addEventListener('click', (event) => {
+  if (event.target === howtoDialog) {
+    howtoDialog.close();
+  }
+});
+
+howtoDialog.querySelectorAll('[data-dialog-close]').forEach((btn) => {
+  btn.addEventListener('click', () => howtoDialog.close());
+});
 
 let deferredInstallPrompt = null;
 
@@ -148,6 +165,9 @@ async function renderMermaidDiagrams(root) {
 }
 
 async function renderMarkdown(text, name = 'untitled.md') {
+  currentSourceText = text;
+  sourceView.textContent = text;
+
   const dirty = md.render(text);
   const clean = DOMPurify.sanitize(dirty, {
     USE_PROFILES: { html: true },
@@ -161,13 +181,26 @@ async function renderMarkdown(text, name = 'untitled.md') {
   });
 
   welcome.hidden = true;
-  content.hidden = false;
+  reader.hidden = false;
+  btnSource.hidden = false;
   document.documentElement.classList.add('is-reading');
   fileNameEl.textContent = name;
   document.title = `${name} · Markdown Viewer v${appVersion}`;
   main.scrollTop = 0;
 
   await renderMermaidDiagrams(content);
+}
+
+function setSourceOpen(open) {
+  sourceOpen = open;
+  sourcePanel.hidden = !open;
+  document.documentElement.classList.toggle('source-open', open);
+  btnSource.setAttribute('aria-pressed', open ? 'true' : 'false');
+  btnSource.classList.toggle('is-active', open);
+}
+
+function toggleSource() {
+  setSourceOpen(!sourceOpen);
 }
 
 async function openFile(file) {
@@ -184,6 +217,15 @@ async function openHandle(handle) {
   const file = await handle.getFile();
   await openFile(file);
 }
+
+btnSource.addEventListener('click', () => toggleSource());
+btnSourceClose.addEventListener('click', () => setSourceOpen(false));
+
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && sourceOpen && !document.documentElement.classList.contains('mermaid-lightbox-open')) {
+    setSourceOpen(false);
+  }
+});
 
 fileInput.addEventListener('change', async () => {
   const file = fileInput.files?.[0];

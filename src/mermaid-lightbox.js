@@ -19,11 +19,14 @@ export function createMermaidLightbox(root = document.body) {
         <button type="button" class="btn" data-action="zoom-in" title="Увеличить">+</button>
         <button type="button" class="btn" data-action="reset" title="Сбросить">Сброс</button>
       </div>
-      <button type="button" class="btn btn-accent" data-action="close">Закрыть</button>
+      <div class="mermaid-lightbox-bar-end">
+        <button type="button" class="btn btn-accent" data-action="close">Закрыть</button>
+        <button type="button" class="dialog-close mermaid-lightbox-x" data-action="close" aria-label="Закрыть" title="Закрыть">×</button>
+      </div>
     </div>
     <div class="mermaid-lightbox-stage" data-role="stage">
       <div class="mermaid-lightbox-canvas" data-role="canvas"></div>
-      <p class="mermaid-lightbox-hint">Колёсико — zoom · перетаскивание — перемещение · Esc — закрыть</p>
+      <p class="mermaid-lightbox-hint">Колёсико — zoom · перетаскивание — перемещение · Esc / клик вне схемы — закрыть</p>
     </div>
   `;
   root.appendChild(lightbox);
@@ -36,6 +39,7 @@ export function createMermaidLightbox(root = document.body) {
   let tx = 0;
   let ty = 0;
   let dragging = false;
+  let didDrag = false;
   let lastX = 0;
   let lastY = 0;
   let activePointer = null;
@@ -186,7 +190,10 @@ export function createMermaidLightbox(root = document.body) {
 
   stage.addEventListener('pointerdown', (event) => {
     if (event.button !== 0) return;
+    // Pan only when grabbing the diagram itself.
+    if (!event.target.closest('[data-role="canvas"]')) return;
     dragging = true;
+    didDrag = false;
     activePointer = event.pointerId;
     lastX = event.clientX;
     lastY = event.clientY;
@@ -196,8 +203,11 @@ export function createMermaidLightbox(root = document.body) {
 
   stage.addEventListener('pointermove', (event) => {
     if (!dragging || event.pointerId !== activePointer) return;
-    tx += event.clientX - lastX;
-    ty += event.clientY - lastY;
+    const dx = event.clientX - lastX;
+    const dy = event.clientY - lastY;
+    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) didDrag = true;
+    tx += dx;
+    ty += dy;
     lastX = event.clientX;
     lastY = event.clientY;
     applyTransform();
@@ -212,6 +222,17 @@ export function createMermaidLightbox(root = document.body) {
 
   stage.addEventListener('pointerup', endDrag);
   stage.addEventListener('pointercancel', endDrag);
+
+  stage.addEventListener('click', (event) => {
+    if (didDrag) {
+      didDrag = false;
+      return;
+    }
+    // Click on dark area outside the SVG closes the lightbox.
+    if (!event.target.closest('[data-role="canvas"]')) {
+      close();
+    }
+  });
 
   window.addEventListener('keydown', (event) => {
     if (lightbox.hidden) return;

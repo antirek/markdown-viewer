@@ -28,6 +28,9 @@
           </div>
         </div>
         <div class="actions">
+          <button type="button" id="btn-source" class="btn" hidden aria-pressed="false">
+            Исходник
+          </button>
           <label class="btn btn-accent" for="file-input">Открыть .md</label>
           <button type="button" id="btn-install" class="btn" hidden>Установить</button>
           <button type="button" id="btn-howto" class="btn btn-ghost">Как установить</button>
@@ -61,7 +64,18 @@
           </p>
         </section>
 
-        <article id="content" class="markdown-body" hidden></article>
+        <div id="reader" class="reader" hidden>
+          <aside id="source-panel" class="source-panel" hidden>
+            <div class="source-panel-head">
+              <span>Исходный Markdown</span>
+              <button type="button" id="btn-source-close" class="btn btn-ghost source-close">
+                Скрыть
+              </button>
+            </div>
+            <pre id="source-view" class="source-view" tabindex="0"></pre>
+          </aside>
+          <article id="content" class="markdown-body"></article>
+        </div>
       </main>
 
       <div id="drop-overlay" class="drop-overlay" hidden>
@@ -69,25 +83,30 @@
       </div>
 
       <dialog id="howto-dialog" class="dialog">
-        <form method="dialog" class="dialog-inner">
-          <p class="howto-detected" data-howto-detected></p>
-          <div class="platform-tabs" role="tablist" aria-label="Платформа">
-            <button type="button" class="platform-tab" role="tab" data-platform-tab="windows">
-              Windows
-            </button>
-            <button type="button" class="platform-tab" role="tab" data-platform-tab="macos">
-              macOS
-            </button>
-            <button type="button" class="platform-tab" role="tab" data-platform-tab="linux">
-              Linux
-            </button>
-          </div>
-          <h2 data-howto-title>Установка</h2>
-          <ol data-howto-steps></ol>
-          <p class="howto-tip" data-howto-tip></p>
-          <pre data-howto-code hidden></pre>
-          <button type="submit" class="btn btn-accent">Понятно</button>
-        </form>
+        <div class="dialog-panel">
+          <button type="button" class="dialog-close" aria-label="Закрыть" title="Закрыть" data-dialog-close>
+            ×
+          </button>
+          <form method="dialog" class="dialog-inner">
+            <p class="howto-detected" data-howto-detected></p>
+            <div class="platform-tabs" role="tablist" aria-label="Платформа">
+              <button type="button" class="platform-tab" role="tab" data-platform-tab="windows">
+                Windows
+              </button>
+              <button type="button" class="platform-tab" role="tab" data-platform-tab="macos">
+                macOS
+              </button>
+              <button type="button" class="platform-tab" role="tab" data-platform-tab="linux">
+                Linux
+              </button>
+            </div>
+            <h2 data-howto-title>Установка</h2>
+            <ol data-howto-steps></ol>
+            <p class="howto-tip" data-howto-tip></p>
+            <pre data-howto-code hidden></pre>
+            <button type="submit" class="btn btn-accent">Понятно</button>
+          </form>
+        </div>
       </dialog>
     </div>
     <script type="module" src="/src/main.js"></script>
