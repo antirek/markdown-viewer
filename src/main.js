@@ -1,6 +1,7 @@
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
 import { version as appVersion } from '../package.json';
+import { createMermaidLightbox, enhanceMermaidDiagrams } from './mermaid-lightbox.js';
 import './style.css';
 
 const md = new MarkdownIt({
@@ -23,6 +24,7 @@ const howtoDialog = document.getElementById('howto-dialog');
 const installHint = document.getElementById('install-hint');
 const dropOverlay = document.getElementById('drop-overlay');
 const main = document.getElementById('main');
+const mermaidLightbox = createMermaidLightbox(document.getElementById('app'));
 
 appVersionEl.textContent = `v${appVersion}`;
 document.title = `Markdown Viewer v${appVersion}`;
@@ -106,6 +108,8 @@ async function renderMermaidDiagrams(root) {
   } catch (error) {
     console.error('Mermaid render failed', error);
   }
+
+  enhanceMermaidDiagrams(root, mermaidLightbox);
 }
 
 async function renderMarkdown(text, name = 'untitled.md') {

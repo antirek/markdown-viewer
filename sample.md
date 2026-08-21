@@ -2,32 +2,36 @@
 
 Это тестовый файл для **Markdown Viewer**.
 
-## Список
-
-- пункт один
-- пункт два
-
-## Код
-
-```js
-console.log('hello markdown');
-```
-
 ## Диаграмма Mermaid
 
 ```mermaid
-flowchart LR
-  A[Файл .md] --> B[Markdown Viewer]
-  B --> C[Рендер]
-  C --> D[Просмотр]
+flowchart TB
+  subgraph Client["Клиент"]
+    UI[Markdown Viewer]
+    PWA[PWA Shell]
+  end
+
+  subgraph Render["Рендер"]
+    MD[markdown-it]
+    SAN[DOMPurify]
+    MM[Mermaid]
+    LB[Lightbox zoom/drag]
+  end
+
+  subgraph OS["Ubuntu / Chrome"]
+    FS[Локальный .md]
+    FH[File Handling API]
+  end
+
+  FS -->|открыть| FH
+  FH --> UI
+  UI --> PWA
+  UI --> MD
+  MD --> SAN
+  SAN --> MM
+  MM --> LB
+  UI -->|drag and drop| MD
+  LB -->|fullscreen| UI
 ```
 
-## Таблица
-
-| A | B |
-|---|---|
-| 1 | 2 |
-
-> Цитата для проверки стилей.
-
-Ссылка: [MDN](https://developer.mozilla.org/).
+Кнопка **«На весь экран»** — zoom колёсиком, перемещение перетаскиванием.
