@@ -15,8 +15,6 @@ const content = document.getElementById('content');
 const fileNameEl = document.getElementById('file-name');
 const appVersionEl = document.getElementById('app-version');
 const fileInput = document.getElementById('file-input');
-const btnOpen = document.getElementById('btn-open');
-const btnOpenWelcome = document.getElementById('btn-open-welcome');
 const btnInstall = document.getElementById('btn-install');
 const btnInstallWelcome = document.getElementById('btn-install-welcome');
 const btnInstallHelp = document.getElementById('btn-install-help');
@@ -148,8 +146,6 @@ async function openHandle(handle) {
   await openFile(file);
 }
 
-btnOpen.addEventListener('click', () => fileInput.click());
-btnOpenWelcome.addEventListener('click', () => fileInput.click());
 fileInput.addEventListener('change', async () => {
   const file = fileInput.files?.[0];
   await openFile(file);

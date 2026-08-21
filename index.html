@@ -28,11 +28,16 @@
           </div>
         </div>
         <div class="actions">
-          <button type="button" id="btn-open" class="btn btn-accent">Открыть .md</button>
+          <label class="btn btn-accent" for="file-input">Открыть .md</label>
           <button type="button" id="btn-install" class="btn" hidden>Установить</button>
           <button type="button" id="btn-howto" class="btn btn-ghost">Ubuntu</button>
         </div>
-        <input id="file-input" type="file" accept=".md,.markdown,.mdown,.mkd,text/markdown" hidden />
+        <input
+          id="file-input"
+          class="file-input"
+          type="file"
+          accept=".md,.markdown,.mdown,.mkd,text/markdown"
+        />
       </header>
 
       <main id="main" class="main">
@@ -43,9 +48,7 @@
             Откройте <code>.md</code> или перетащите файл сюда. Без редактирования и без записи на диск.
           </p>
           <div class="welcome-cta">
-            <button type="button" id="btn-open-welcome" class="btn btn-accent btn-lg">
-              Открыть файл
-            </button>
+            <label class="btn btn-accent btn-lg" for="file-input">Открыть файл</label>
             <button type="button" id="btn-install-welcome" class="btn btn-lg" hidden>
               Установить приложение
             </button>

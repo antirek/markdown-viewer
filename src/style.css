@@ -180,6 +180,24 @@ body::before {
   font-size: 1rem;
 }
 
+label.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .main {
   overflow: auto;
   padding: clamp(1.25rem, 4vw, 2.5rem);
@@ -459,6 +477,10 @@ body::before {
 
   .welcome-cta .btn {
     width: 100%;
+  }
+
+  .actions label.btn {
+    flex: 1;
   }
 }
 
