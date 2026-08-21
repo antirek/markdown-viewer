@@ -1,5 +1,6 @@
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
+import { version as appVersion } from '../package.json';
 import './style.css';
 
 const md = new MarkdownIt({
@@ -12,6 +13,7 @@ const md = new MarkdownIt({
 const welcome = document.getElementById('welcome');
 const content = document.getElementById('content');
 const fileNameEl = document.getElementById('file-name');
+const appVersionEl = document.getElementById('app-version');
 const fileInput = document.getElementById('file-input');
 const btnOpen = document.getElementById('btn-open');
 const btnInstall = document.getElementById('btn-install');
@@ -24,6 +26,8 @@ const installBanner = document.getElementById('install-banner');
 const dropOverlay = document.getElementById('drop-overlay');
 const main = document.getElementById('main');
 
+appVersionEl.textContent = `v${appVersion}`;
+document.title = `Markdown Viewer v${appVersion}`;
 const BANNER_DISMISS_KEY = 'md-viewer-hide-install-banner';
 
 let deferredInstallPrompt = null;
@@ -63,7 +67,52 @@ function isMarkdownName(name) {
   return /\.(md|markdown|mdown|mkd)$/i.test(name || '');
 }
 
-function renderMarkdown(text, name = 'untitled.md') {
+let mermaidReady = null;
+
+async function ensureMermaid() {
+  if (!mermaidReady) {
+    mermaidReady = import('mermaid').then(({ default: mermaid }) => {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'dark',
+        securityLevel: 'strict',
+        fontFamily: 'IBM Plex Sans, sans-serif',
+      });
+      return mermaid;
+    });
+  }
+  return mermaidReady;
+}
+
+async function renderMermaidDiagrams(root) {
+  const codeBlocks = [...root.querySelectorAll('pre > code.language-mermaid')];
+  if (!codeBlocks.length) return;
+
+  const mermaid = await ensureMermaid();
+  const nodes = [];
+
+  for (const code of codeBlocks) {
+    const pre = code.parentElement;
+    if (!pre) continue;
+
+    const container = document.createElement('div');
+    container.className = 'mermaid-diagram';
+    const diagram = document.createElement('div');
+    diagram.className = 'mermaid';
+    diagram.textContent = code.textContent ?? '';
+    container.appendChild(diagram);
+    pre.replaceWith(container);
+    nodes.push(diagram);
+  }
+
+  try {
+    await mermaid.run({ nodes });
+  } catch (error) {
+    console.error('Mermaid render failed', error);
+  }
+}
+
+async function renderMarkdown(text, name = 'untitled.md') {
   const dirty = md.render(text);
   const clean = DOMPurify.sanitize(dirty, {
     USE_PROFILES: { html: true },
@@ -79,8 +128,10 @@ function renderMarkdown(text, name = 'untitled.md') {
   welcome.hidden = true;
   content.hidden = false;
   fileNameEl.textContent = name;
-  document.title = `${name} · Markdown Viewer`;
+  document.title = `${name} · Markdown Viewer v${appVersion}`;
   main.scrollTop = 0;
+
+  await renderMermaidDiagrams(content);
 }
 
 async function openFile(file) {
@@ -90,7 +141,7 @@ async function openFile(file) {
     return;
   }
   const text = await file.text();
-  renderMarkdown(text, file.name);
+  await renderMarkdown(text, file.name);
 }
 
 async function openHandle(handle) {

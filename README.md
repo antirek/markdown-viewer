@@ -34,6 +34,7 @@ npm run preview
 ## Возможности MVP
 
 - Рендер Markdown (markdown-it) + санитизация (DOMPurify)
+- Диаграммы Mermaid в блоках ` ```mermaid `
 - Drag-and-drop и кнопка «Открыть .md»
 - PWA: установка как приложение
 - `file_handlers` + `launchQueue` — открытие `.md` из ОС (Chromium)

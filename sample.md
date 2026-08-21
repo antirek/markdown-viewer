@@ -13,6 +13,15 @@
 console.log('hello markdown');
 ```
 
+## Диаграмма Mermaid
+
+```mermaid
+flowchart LR
+  A[Файл .md] --> B[Markdown Viewer]
+  B --> C[Рендер]
+  C --> D[Просмотр]
+```
+
 ## Таблица
 
 | A | B |

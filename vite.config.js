@@ -67,6 +67,8 @@ export default defineConfig(({ mode }) => ({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
+        // Mermaid chunks are large; keep them out of the install precache.
+        maximumFileSizeToCacheInBytes: 1.5 * 1024 * 1024,
       },
       devOptions: {
         enabled: true,
