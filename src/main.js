@@ -1,3 +1,4 @@
+import { onLaunchedFiles, readLaunchedHandle } from './launch-files.js';
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
 import { version as appVersion } from '../package.json';
@@ -214,9 +215,29 @@ async function openFile(file) {
 }
 
 async function openHandle(handle) {
-  const file = await handle.getFile();
+  const file = await readLaunchedHandle(handle);
   await openFile(file);
 }
+
+onLaunchedFiles(async (handles) => {
+  let opened = 0;
+  for (const handle of handles) {
+    try {
+      await openHandle(handle);
+      opened += 1;
+    } catch (error) {
+      console.error('Failed to open launched file', error);
+      if (error?.message === 'permission-denied') {
+        alert('Нет доступа к файлу. Разрешите чтение, когда Chrome спросит.');
+      } else {
+        alert('Не удалось открыть файл из ОС. Попробуйте ещё раз или откройте через «Открыть .md».');
+      }
+    }
+  }
+  if (!opened && handles.length) {
+    alert('Файл передан в приложение, но не удалось его прочитать.');
+  }
+});
 
 btnSource.addEventListener('click', () => toggleSource());
 btnSourceClose.addEventListener('click', () => setSourceOpen(false));
@@ -294,18 +315,3 @@ window.addEventListener('drop', async (event) => {
   const file = event.dataTransfer.files?.[0];
   await openFile(file);
 });
-
-// OS file open via File Handling API (Chromium desktop)
-if ('launchQueue' in window) {
-  window.launchQueue.setConsumer(async (launchParams) => {
-    if (!launchParams.files?.length) return;
-    for (const handle of launchParams.files) {
-      try {
-        await openHandle(handle);
-      } catch (error) {
-        console.error('Failed to open launched file', error);
-        alert('Не удалось открыть файл. Разрешите доступ, если браузер спросил.');
-      }
-    }
-  });
-}

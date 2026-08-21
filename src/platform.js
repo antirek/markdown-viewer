@@ -83,7 +83,7 @@ export const INSTRUCTIONS = {
       'Закройте вкладку. Запускайте <strong>Markdown Viewer</strong> из меню приложений (GNOME Activities → поиск «Markdown») или из <code>chrome://apps</code>.',
       'ПКМ по <code>.md</code> → «Открыть с помощью» → Markdown Viewer → «Всегда».',
     ],
-    tip: 'Через терминал (подставьте имя <code>.desktop</code> из <code>~/.local/share/applications/</code>):',
+    tip: 'Через терминал (подставьте имя <code>.desktop</code> из <code>~/.local/share/applications/</code>). Если «Открыть с помощью» запускает приложение без файла — удалите старое PWA и установите снова после обновления, затем разрешите доступ к файлу в диалоге Chrome.',
     code: `ls ~/.local/share/applications/ | grep -i chrome
 xdg-mime default chrome-XXXX-Default.desktop text/markdown
 xdg-mime query default text/markdown`,

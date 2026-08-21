@@ -52,17 +52,19 @@ export default defineConfig(({ mode }) => ({
         ],
         file_handlers: [
           {
-            action: './',
+            action: pagesBase,
             accept: {
-              'text/markdown': ['.md', '.markdown', '.mdown', '.mkd'],
-              'text/x-markdown': ['.md', '.markdown'],
-              'text/plain': ['.md'],
+              'text/markdown': ['.md', '.markdown', '.mdown', '.mkd', '.mdx'],
+              'text/x-markdown': ['.md', '.markdown', '.mdown', '.mkd'],
+              'text/plain': ['.md', '.markdown', '.mdown', '.mkd'],
+              'application/octet-stream': ['.md', '.markdown'],
             },
             launch_type: 'single-client',
           },
         ],
+        // navigate-new: each OS file open gets a fresh client with launchQueue files
         launch_handler: {
-          client_mode: 'focus-existing',
+          client_mode: 'navigate-new',
         },
       },
       workbox: {
