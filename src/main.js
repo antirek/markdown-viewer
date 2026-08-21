@@ -16,19 +16,18 @@ const fileNameEl = document.getElementById('file-name');
 const appVersionEl = document.getElementById('app-version');
 const fileInput = document.getElementById('file-input');
 const btnOpen = document.getElementById('btn-open');
+const btnOpenWelcome = document.getElementById('btn-open-welcome');
 const btnInstall = document.getElementById('btn-install');
-const btnInstallBanner = document.getElementById('btn-install-banner');
+const btnInstallWelcome = document.getElementById('btn-install-welcome');
 const btnInstallHelp = document.getElementById('btn-install-help');
-const btnDismissBanner = document.getElementById('btn-dismiss-banner');
 const btnHowto = document.getElementById('btn-howto');
 const howtoDialog = document.getElementById('howto-dialog');
-const installBanner = document.getElementById('install-banner');
+const installHint = document.getElementById('install-hint');
 const dropOverlay = document.getElementById('drop-overlay');
 const main = document.getElementById('main');
 
 appVersionEl.textContent = `v${appVersion}`;
 document.title = `Markdown Viewer v${appVersion}`;
-const BANNER_DISMISS_KEY = 'md-viewer-hide-install-banner';
 
 let deferredInstallPrompt = null;
 
@@ -44,11 +43,10 @@ function syncInstallUi() {
   const asApp = isRunningAsInstalledApp();
   document.documentElement.classList.toggle('is-installed-app', asApp);
 
-  const dismissed = sessionStorage.getItem(BANNER_DISMISS_KEY) === '1';
-  installBanner.hidden = asApp || dismissed;
-
-  // Always offer install entry in browser tab; prompt() only if event is available.
-  btnInstall.hidden = asApp;
+  const showInstall = !asApp;
+  btnInstall.hidden = !showInstall;
+  btnInstallWelcome.hidden = !showInstall;
+  installHint.hidden = !showInstall;
 }
 
 async function promptInstall() {
@@ -74,9 +72,9 @@ async function ensureMermaid() {
     mermaidReady = import('mermaid').then(({ default: mermaid }) => {
       mermaid.initialize({
         startOnLoad: false,
-        theme: 'dark',
+        theme: 'neutral',
         securityLevel: 'strict',
-        fontFamily: 'IBM Plex Sans, sans-serif',
+        fontFamily: 'Source Sans 3, sans-serif',
       });
       return mermaid;
     });
@@ -127,6 +125,7 @@ async function renderMarkdown(text, name = 'untitled.md') {
 
   welcome.hidden = true;
   content.hidden = false;
+  document.documentElement.classList.add('is-reading');
   fileNameEl.textContent = name;
   document.title = `${name} · Markdown Viewer v${appVersion}`;
   main.scrollTop = 0;
@@ -150,6 +149,7 @@ async function openHandle(handle) {
 }
 
 btnOpen.addEventListener('click', () => fileInput.click());
+btnOpenWelcome.addEventListener('click', () => fileInput.click());
 fileInput.addEventListener('change', async () => {
   const file = fileInput.files?.[0];
   await openFile(file);
@@ -158,10 +158,6 @@ fileInput.addEventListener('change', async () => {
 
 btnHowto.addEventListener('click', () => howtoDialog.showModal());
 btnInstallHelp.addEventListener('click', () => howtoDialog.showModal());
-btnDismissBanner.addEventListener('click', () => {
-  sessionStorage.setItem(BANNER_DISMISS_KEY, '1');
-  installBanner.hidden = true;
-});
 
 window.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault();
@@ -180,7 +176,7 @@ window.addEventListener('appinstalled', () => {
 btnInstall.addEventListener('click', () => {
   void promptInstall();
 });
-btnInstallBanner.addEventListener('click', () => {
+btnInstallWelcome.addEventListener('click', () => {
   void promptInstall();
 });
 
