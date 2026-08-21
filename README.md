@@ -2,7 +2,12 @@
 
 PWA для просмотра локальных `.md` файлов (только чтение).
 
-## Запуск
+## Ссылки
+
+- Репозиторий: https://github.com/antirek/markdown-viewer
+- Приложение (GitHub Pages): https://antirek.github.io/markdown-viewer/
+
+## Локальный запуск
 
 ```bash
 npm install
@@ -18,6 +23,14 @@ npm run build
 npm run preview
 ```
 
+## Деплой на GitHub Pages
+
+Уже настроен workflow `.github/workflows/deploy-pages.yml`.
+
+1. В репозитории: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+2. Запушьте `main` (или вручную запустите workflow **Deploy GitHub Pages**).
+3. Через 1–2 минуты сайт будет на https://antirek.github.io/markdown-viewer/
+
 ## Возможности MVP
 
 - Рендер Markdown (markdown-it) + санитизация (DOMPurify)
@@ -28,6 +41,5 @@ npm run preview
 
 ## Проверка открытия из ОС
 
-1. `npm run build && npm run preview` (или задеплойте на HTTPS).
-2. Установите приложение в Chrome.
-3. ПКМ по `.md` → «Открыть с помощью» → Markdown Viewer.
+1. Откройте Pages-URL в Chrome и установите приложение.
+2. ПКМ по `.md` → «Открыть с помощью» → Markdown Viewer.

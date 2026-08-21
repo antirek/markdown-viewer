@@ -1,26 +1,30 @@
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
-export default defineConfig({
+// GitHub Pages project site: https://antirek.github.io/markdown-viewer/
+const pagesBase = '/markdown-viewer/';
+
+export default defineConfig(({ mode }) => ({
+  base: mode === 'production' ? pagesBase : '/',
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['icons/icon.svg'],
       manifest: {
-        id: '/',
+        id: pagesBase,
         name: 'Markdown Viewer',
         short_name: 'MD Viewer',
         description: 'Read-only markdown viewer for local .md files',
         lang: 'ru',
-        start_url: '/?source=pwa',
-        scope: '/',
+        start_url: './?source=pwa',
+        scope: './',
         display: 'standalone',
         display_override: ['standalone', 'minimal-ui'],
         background_color: '#1a1f24',
         theme_color: '#1a1f24',
         categories: ['utilities', 'productivity'],
         prefer_related_applications: false,
-  icons: [
+        icons: [
           {
             src: 'icons/icon.svg',
             sizes: 'any',
@@ -48,7 +52,7 @@ export default defineConfig({
         ],
         file_handlers: [
           {
-            action: '/',
+            action: './',
             accept: {
               'text/markdown': ['.md', '.markdown', '.mdown', '.mkd'],
               'text/x-markdown': ['.md', '.markdown'],
@@ -69,4 +73,4 @@ export default defineConfig({
       },
     }),
   ],
-});
+}));
