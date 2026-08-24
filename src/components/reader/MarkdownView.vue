@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { handleMarkdownLinkClick } from '../../lib/externalLinks.js';
 
 defineProps({
   html: { type: String, default: '' },
@@ -10,5 +11,10 @@ defineExpose({ root });
 </script>
 
 <template>
-  <article ref="root" class="markdown-body" v-html="html"></article>
+  <article
+    ref="root"
+    class="markdown-body"
+    v-html="html"
+    @click.capture="handleMarkdownLinkClick"
+  ></article>
 </template>

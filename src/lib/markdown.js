@@ -22,7 +22,9 @@ export function renderMarkdown(text) {
 
   const wrapped = `<div>${html}</div>`;
   const doc = new DOMParser().parseFromString(wrapped, 'text/html');
-  doc.querySelectorAll('a[href^="http"]').forEach((a) => {
+  doc.querySelectorAll('a[href]').forEach((a) => {
+    const href = a.getAttribute('href') || '';
+    if (!/^https?:\/\//i.test(href) && !href.startsWith('//')) return;
     a.setAttribute('target', '_blank');
     a.setAttribute('rel', 'noopener noreferrer');
   });
