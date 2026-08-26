@@ -45,6 +45,7 @@ npm test
 
 - Рендер Markdown (markdown-it) + санитизация (DOMPurify)
 - Диаграммы Mermaid в блоках ` ```mermaid ` (полноэкранный просмотр с zoom/drag)
+- Экспорт в PDF через печать браузера (кнопка **PDF** → «Сохранить как PDF»)
 - Drag-and-drop и кнопка «Открыть .md»
 - PWA: установка как приложение
 - `file_handlers` + `launchQueue` — открытие `.md` из ОС (Chromium)

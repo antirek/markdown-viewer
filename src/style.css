@@ -822,3 +822,89 @@ html.is-installed-app #btn-install-welcome {
     max-width: 100%;
   }
 }
+
+/* Print / «Save as PDF»: only the rendered document */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  html::before,
+  body::before {
+    display: none !important;
+  }
+
+  #app {
+    display: block !important;
+    min-height: 0 !important;
+  }
+
+  .topbar,
+  .welcome,
+  .drop-overlay,
+  .dialog,
+  .source-panel,
+  .mermaid-toolbar,
+  .mermaid-lightbox,
+  .file-input {
+    display: none !important;
+  }
+
+  .main {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .reader {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    gap: 0 !important;
+  }
+
+  .markdown-body {
+    display: block !important;
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #fff !important;
+    animation: none !important;
+    overflow: visible !important;
+  }
+
+  .markdown-body .mermaid-diagram {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+  }
+
+  .markdown-body .mermaid svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  .markdown-body a[href]::after {
+    content: none;
+  }
+
+  .markdown-body pre,
+  .markdown-body table {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

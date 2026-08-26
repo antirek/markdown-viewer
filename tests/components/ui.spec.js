@@ -9,16 +9,31 @@ describe('TopBar', () => {
   it('shows version and source button state', () => {
     const wrapper = mount(TopBar, {
       props: {
-        version: '0.2.2',
+        version: '0.2.4',
         fileName: 'sample.md',
         showSourceBtn: true,
         sourceOpen: true,
         showInstall: true,
+        showPrintBtn: true,
       },
     });
-    expect(wrapper.text()).toContain('v0.2.2');
+    expect(wrapper.text()).toContain('v0.2.4');
     expect(wrapper.text()).toContain('sample.md');
+    expect(wrapper.text()).toContain('PDF');
     expect(wrapper.find('[aria-pressed="true"]').exists()).toBe(true);
+  });
+
+  it('emits print when PDF is clicked', async () => {
+    const wrapper = mount(TopBar, {
+      props: {
+        version: '0.2.4',
+        showPrintBtn: true,
+      },
+    });
+    const pdfBtn = wrapper.findAll('button').find((b) => b.text() === 'PDF');
+    expect(pdfBtn).toBeTruthy();
+    await pdfBtn.trigger('click');
+    expect(wrapper.emitted('print')).toBeTruthy();
   });
 });
 

@@ -7,9 +7,10 @@ defineProps({
   showSourceBtn: { type: Boolean, default: false },
   sourceOpen: { type: Boolean, default: false },
   showInstall: { type: Boolean, default: false },
+  showPrintBtn: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(['file-selected', 'toggle-source', 'install', 'howto']);
+const emit = defineEmits(['file-selected', 'toggle-source', 'install', 'howto', 'print']);
 const fileInput = ref(null);
 
 function onFileChange(event) {
@@ -38,6 +39,15 @@ function onFileChange(event) {
         @click="emit('toggle-source')"
       >
         Исходник
+      </button>
+      <button
+        v-if="showPrintBtn"
+        type="button"
+        class="btn"
+        title="В диалоге печати выберите «Сохранить как PDF»"
+        @click="emit('print')"
+      >
+        PDF
       </button>
       <label class="btn btn-accent" for="file-input">Открыть .md</label>
       <button v-if="showInstall" type="button" class="btn" @click="emit('install')">Установить</button>

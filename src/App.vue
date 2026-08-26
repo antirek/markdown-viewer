@@ -83,6 +83,18 @@ function onHowto() {
   openHowto();
 }
 
+function onPrint() {
+  if (!isReading.value) return;
+  if (sourceOpen.value) setSourceOpen(false);
+  if (document.documentElement.classList.contains('mermaid-lightbox-open')) {
+    document.querySelector('#mermaid-lightbox [data-action="close"]')?.click();
+  }
+  // Let UI settle (source closed, lightbox closed) before the print dialog.
+  requestAnimationFrame(() => {
+    window.print();
+  });
+}
+
 function onKeydown(event) {
   if (event.key !== 'Escape') return;
   if (document.documentElement.classList.contains('mermaid-lightbox-open')) return;
@@ -108,10 +120,12 @@ onUnmounted(() => {
       :show-source-btn="isReading"
       :source-open="sourceOpen"
       :show-install="showInstall"
+      :show-print-btn="isReading"
       @file-selected="onFileSelected"
       @toggle-source="toggleSource"
       @install="onInstall"
       @howto="onHowto"
+      @print="onPrint"
     />
 
     <main class="main">
