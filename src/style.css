@@ -245,6 +245,12 @@ label.btn {
   letter-spacing: 0.02em;
 }
 
+.source-panel-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.source-copy,
 .source-close {
   color: #9eb4ae !important;
   border-color: transparent !important;

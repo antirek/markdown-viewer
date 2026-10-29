@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils';
-import { describe, expect, it } from 'vitest';
+import { flushPromises, mount } from '@vue/test-utils';
+import { describe, expect, it, vi } from 'vitest';
 import TopBar from '../../src/components/TopBar.vue';
 import SourcePanel from '../../src/components/reader/SourcePanel.vue';
 import HowtoDialog from '../../src/components/howto/HowtoDialog.vue';
@@ -45,6 +45,19 @@ describe('SourcePanel', () => {
     expect(wrapper.find('.source-view').text()).toBe('# hi');
     await wrapper.find('.source-close').trigger('click');
     expect(wrapper.emitted('close')).toBeTruthy();
+  });
+
+  it('copies source to clipboard', async () => {
+    const writeText = vi.fn().mockResolvedValue();
+    vi.stubGlobal('navigator', { ...navigator, clipboard: { writeText } });
+    const wrapper = mount(SourcePanel, {
+      props: { open: true, source: '# hi' },
+    });
+    await wrapper.find('.source-copy').trigger('click');
+    await flushPromises();
+    expect(writeText).toHaveBeenCalledWith('# hi');
+    expect(wrapper.find('.source-copy').text()).toBe('Скопировано');
+    vi.unstubAllGlobals();
   });
 });
 
